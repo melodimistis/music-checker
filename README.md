@@ -5,12 +5,10 @@
 
 A Python script that **sorts your music files into one folder per album/single** and **tidies the `.lrc` lyric files** that go with them.
 
-It is made for libraries where everything ended up in one big folder (downloads, rips, exports) and you want the result to look like this: one album, one folder, songs and their lyrics side by side.
-
-<!-- IMAGE: screenshot of the folder BEFORE (everything mixed together) and AFTER (grouped by album) -->
+It is made for libraries where everything ended up in one big folder (downloads, rips, exports) and you want the result to look like this: one album, one folder, songs and their lyrics side by side!.
 
 > [!WARNING]
-> **Testing status — please read.**
+> **Testing status, please read.**
 > The script reads tags through [mutagen](https://mutagen.readthedocs.io/), so it can handle many audio formats, but not all of them have been tested:
 >
 > - **Tested on generated sample files:** FLAC, MP3, M4A (AAC), Ogg Vorbis, Opus, WMA, AIFF, WAV (with ID3 tags), WavPack.
@@ -45,11 +43,11 @@ It is made for libraries where everything ended up in one big folder (downloads,
 2. **Pairs each `.lrc` file with its song** by file name and puts it in the same folder.
 3. **Tidies the contents of the `.lrc` files**: removes labels and tags that are not lyrics and normalizes the timestamps.
 4. **Writes a report**: albums found, how many tracks you have compared to how many the tag says there should be, songs without lyrics, lyrics without songs, and warnings.
-5. *(Optional)* **Adds romanization** under Japanese/Korean/Chinese lyric lines, if the original `.lrc` already contains romanization data.
+5. _(Optional)_ **Adds romanization** under Japanese/Korean/Chinese lyric lines, if the original `.lrc` already contains romanization data.
 
 ## Principles
 
-- **Your original files are never modified or deleted.** Everything is *copied* to a new folder.
+- **Your original files are never modified or deleted.** Everything is _copied_ to a new folder.
 - **File names are never changed.** Spaces, brackets, apostrophes, upper/lower case: all kept exactly as they are. The only names the script creates are **album folder names**.
 - **Dry run by default.** Without `--apply` the script only prints a plan and touches nothing.
 - **No guessing.** Songs without an album tag go to `_without album`; lyrics without a matching song go to `_LRC without audio`, so you can check them yourself.
@@ -108,17 +106,15 @@ python3 music-checker.py "/home/user/Music/mixed" --apply
 
 The result goes into a new folder next to the source, named **`<source-folder> - organized`**. After `--apply`, the full report is also saved as `report.txt` inside that folder.
 
-<!-- IMAGE: screenshot of the dry-run output in a terminal -->
-
 ### Options
 
-| Option | What it does |
-|--------|--------------|
-| `-o`, `--output` | Choose the destination folder. Default: `<source-folder> - organized`. |
-| `--apply` | Actually copy the files. Without it, nothing is touched (dry run). |
-| `--romaji` | For Japanese/Korean/Chinese songs: add the romanization in parentheses below each lyric line. Only works if the original `.lrc` already has `[x-romaji:...]` data (see [romaji example](#romaji-example)). |
-| `--split-artists` | If two albums share a name but have different album artists, split them into `Album Name (Artist)`. Default: they are merged and a warning is printed. |
-| `--ext EXT` | Treat an extra file extension as music, e.g. `--ext .mp4`. Can be repeated. Only useful if mutagen can read tags from that format. |
+| Option            | What it does                                                                                                                                                                                               |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-o`, `--output`  | Choose the destination folder. Default: `<source-folder> - organized`.                                                                                                                                     |
+| `--apply`         | Actually copy the files. Without it, nothing is touched (dry run).                                                                                                                                         |
+| `--romaji`        | For Japanese/Korean/Chinese songs: add the romanization in parentheses below each lyric line. Only works if the original `.lrc` already has `[x-romaji:...]` data (see [romaji example](#romaji-example)). |
+| `--split-artists` | If two albums share a name but have different album artists, split them into `Album Name (Artist)`. Default: they are merged and a warning is printed.                                                     |
+| `--ext EXT`       | Treat an extra file extension as music, e.g. `--ext .mp4`. Can be repeated. Only useful if mutagen can read tags from that format.                                                                         |
 
 Example combining options:
 
@@ -169,8 +165,6 @@ Music/mixed - organized/
 ```
 
 Folder names come from each file's `ALBUM` tag. In this example `Song Four` has no album tag, so it lands in `_without album`.
-
-<!-- IMAGE: screenshot of the final result in a file manager -->
 
 ### `.lrc` before and after
 
@@ -253,8 +247,6 @@ Ignored: {'.jpg': 2}
 This is only a plan. If it looks right, run again with --apply
 ```
 
-<!-- IMAGE: screenshot of a finished report.txt -->
-
 ---
 
 ## How it works
@@ -263,7 +255,7 @@ This is only a plan. If it looks right, run again with --apply
 
 - Folder name = the **`ALBUM`** tag inside the audio file (not a guess from the file name). Different formats store it under different names (`album`, `WM/AlbumTitle`, `TALB`, ...); the script knows the common ones.
 - Repeated spaces are cleaned up (`Title  - EP` becomes `Title - EP`).
-- Characters that are not allowed in folder names are replaced or removed, **in the folder name only** (file names stay untouched): `:` `/` `\` `|` become ` - `; `<` `>` `"` `?` `*` are removed; trailing dots and spaces are removed.
+- Characters that are not allowed in folder names are replaced or removed, **in the folder name only** (file names stay untouched): `:` `/` `\` `|` become `-`; `<` `>` `"` `?` `*` are removed; trailing dots and spaces are removed.
 - Album names that differ only by upper/lower case, repeated spaces or the kind of apostrophe are merged under the most common spelling.
 - No album tag (or unreadable tags) → folder `_without album`.
 
@@ -288,16 +280,16 @@ From the `TRACKNUMBER` tag (for example `3/12`) or `TRACKTOTAL`/`TOTALTRACKS`, t
 
 ## Reading the report
 
-| Section | Meaning |
-|---------|---------|
-| `ALBUMS / SINGLES` | The folders that will be created, how many tracks were found compared to the tag, and which track numbers are missing. |
-| `AUDIO WITHOUT LRC` | Songs that have no lyric file. Informational only. |
-| `LRC WITHOUT MATCHING AUDIO` | Lyrics whose song was not found. Copied to `_LRC without audio` for you to check by hand. |
+| Section                                             | Meaning                                                                                                                                         |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ALBUMS / SINGLES`                                  | The folders that will be created, how many tracks were found compared to the tag, and which track numbers are missing.                          |
+| `AUDIO WITHOUT LRC`                                 | Songs that have no lyric file. Informational only.                                                                                              |
+| `LRC WITHOUT MATCHING AUDIO`                        | Lyrics whose song was not found. Copied to `_LRC without audio` for you to check by hand.                                                       |
 | `WARNING: same album name, different album artists` | Two different albums may have been merged just because they share a name (for example "Greatest Hits"). Use `--split-artists` to separate them. |
-| `More than one LRC matches these audio files` | A song matched several lyric files because of ambiguous names. |
-| `SKIPPED: name collision` | Two different files would end up with the same name in the same folder; one of them was skipped. |
-| `PROBLEMS` | Files whose tags could not be read. They are still copied, into `_without album`. |
-| `LRC NOTES` | Shown after `--apply`: lyrics whose `[bg]` lines were removed, lyrics without timestamps, and encoding conversions or problems. |
+| `More than one LRC matches these audio files`       | A song matched several lyric files because of ambiguous names.                                                                                  |
+| `SKIPPED: name collision`                           | Two different files would end up with the same name in the same folder; one of them was skipped.                                                |
+| `PROBLEMS`                                          | Files whose tags could not be read. They are still copied, into `_without album`.                                                               |
+| `LRC NOTES`                                         | Shown after `--apply`: lyrics whose `[bg]` lines were removed, lyrics without timestamps, and encoding conversions or problems.                 |
 
 **About "missing no." numbers:** they do not always mean a song is missing. In one source folder a song usually exists as a single file, so a song that appears on several editions (standard and deluxe, for instance) only goes into one folder, according to the album tag inside that file. A song that was also released as a single may carry a `... - Single` album tag and land in its own single folder instead. The albums that are only one or two tracks short are the ones most worth checking.
 
