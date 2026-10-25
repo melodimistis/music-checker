@@ -62,8 +62,8 @@ It is made for libraries where everything ended up in one big folder (downloads,
 Get the script:
 
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+git clone https://github.com/melodimistis/music-checker.git
+cd music-checker
 ```
 
 Install `mutagen`. Pick **one** way:
